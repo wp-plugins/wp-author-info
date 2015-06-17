@@ -1,6 +1,6 @@
 === Plugin Name ===
-Contributors: sidHitesh7
-Tags: Author Detail, Author Info, Author Detail into page, author detail into custom page, author detail into custom post type
+Contributors: Ghuwad, siddhapurahitesh
+Tags: Author Detail, Author Info, Author Detail into page, Author detail into custom page, Author detail into custom post type
 Requires at least: 3.0
 Tested up to: 4.2.2
 Stable tag: 1.0

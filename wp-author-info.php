@@ -4,7 +4,7 @@
  * Plugin Name: WP Author Info
  * Plugin URI: http://ghuwad.com/
  * Description: You can attach author info with any post types via WP Author Info.
- * Version: 0.0.1
+ * Version: 1.0.0
  * Author: Ghuwad.com
  * Author URI: http://ghuwad.com/about-us
  * License: GPL2 or later
