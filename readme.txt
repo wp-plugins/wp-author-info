@@ -3,7 +3,7 @@ Contributors: Ghuwad, siddhapurahitesh
 Tags: Author Detail, Author Info, Author Detail into page, Author detail into custom page, Author detail into custom post type
 Requires at least: 3.0
 Tested up to: 4.2.2
-Stable tag: 1.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,10 +35,10 @@ Ask questions about at the plugin <a href="mailto:contact@ghuwad.com">contact@gh
 
 == Screenshots ==
 
-1. /assets/SettingPage-VisibilityOption.png
-2. /assets/SettingPage-ThemeOption.png
-3. /assets/Example1.png
-3. /assets/Example4.png
+1. /assets/setting-page-visibility-option.png
+2. /assets/setting-page-theme-option.png
+3. /assets/example-1.png
+3. /assets/example-2.png
 
 == Changelog ==
 
