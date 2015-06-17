@@ -35,10 +35,10 @@ Ask questions about at the plugin <a href="mailto:contact@ghuwad.com">contact@gh
 
 == Screenshots ==
 
-1. /assets/setting-page-visibility-option.png
-2. /assets/setting-page-theme-option.png
-3. /assets/example-1.png
-3. /assets/example-2.png
+1. **Setting Page - Visibility Option** - You can set where to display author info on site.
+2. **Setting Page - Theme Option** - Set look & feel for author info detail. We have right now add only basic look, later will extend new theme.
+3. **Example 1** - Show author info above post content
+4. **Example 2** - Show author info below post content
 
 == Changelog ==
 
