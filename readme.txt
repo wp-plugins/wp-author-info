@@ -35,12 +35,12 @@ Ask questions about at the plugin <a href="mailto:contact@ghuwad.com">contact@gh
 
 == Screenshots ==
 
-1. SettingPage-VisibilityOption
-2. SettingPage-ThemeOption
-3. Example1
-3. Example4
+1. /assets/SettingPage-VisibilityOption.png
+2. /assets/SettingPage-ThemeOption.png
+3. /assets/Example1.png
+3. /assets/Example4.png
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.0. =
 * Initial release with Author Detail.
