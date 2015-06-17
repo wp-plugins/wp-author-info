@@ -1,0 +1,22 @@
+/*common classes*/
+.gclear{clear:both;}
+.wp-author-info .author-title {
+	font-weight: bold;
+}
+.wp-author-info .avatar {
+	text-align: left;
+	margin-right: 15px;
+}
+.wp-author-info .author-desc {
+	text-align: justify;
+}
+
+/*box theme*/
+.wp-author-info.box {
+	background-color: #FFF;
+	border: 1px solid #CCC;
+	padding: 15px;
+}
+.wp-author-info.box .avatar {
+	float:left;
+}
