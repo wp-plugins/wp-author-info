@@ -18,7 +18,8 @@ Show author detail or author bio on any post type at below or above the content 
 *   You can select any social field into user profile.
 *   You can also add author detail at widget or content using shortcode.
 
-Read about Shortcode: [wp-author-info theme="default" color="black" dir="ltr" social_style="default" author_id="1"] has five arguments.
+= Read about Shortcode: =
+[wp-author-info theme="default" color="black" dir="ltr" social_style="default" author_id="1"] has five arguments.
 
 *   theme (optional) : set given theme for content otherwise take theme from settings
 (Available value : default, border, box-border, smart, material, metro)
@@ -52,7 +53,8 @@ Ask questions about at the plugin <a href="mailto:contact@ghuwad.com">contact@gh
 == Changelog ==
 
 = 2.0.0. =
-Many new features available
+Many new features available  
+
 * Add new design `border-box`, `smart`, `material`, `metro`
 * Add Social Icon (user field) to user profile
 * Customize color with theme
