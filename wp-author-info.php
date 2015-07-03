@@ -3,10 +3,10 @@
 /**
  * Plugin Name: WP Author Info
  * Plugin URI: http://ghuwad.com/
- * Description: You can attach author info with any post types via WP Author Info.
- * Version: 1.0.0
+ * Description: Show author detail or author bio on any post type at below or above the content (including page & post).
+ * Version: 2.0.0
  * Author: Ghuwad.com
- * Author URI: http://ghuwad.com/about-us
+ * Author URI: http://www.ghuwad.com/wordpress-plugins/wp-author-info
  * License: GPL2 or later
  */
 /*
@@ -40,6 +40,25 @@ if(!class_exists('WpAuthorInfo')){
 
 			// Include required files
 			$this->includes();
+
+			$this->update_check();
+		}
+
+		private function update_check() {
+		    $v1 = WpAuthorInfo::getVar('version');
+		    $v2 = WpAuthorInfo::getVar('version', 'settings');
+
+		    if ($v2 == '') { //first time install
+		    	$availFields = WpAuthorInfo::getVar('fields');
+		    	array_walk($availFields, function(&$value, $key, $return) {
+				  $value = $value[$return];
+				}, 'field');
+				$defaultSettings = array('version' => $v1, 'theme' => 'box', 'color' => 'black', 'dir' => 'ltr', 'visibile_fields' => $availFields);
+		    	update_option('wp-author-info-settings', $defaultSettings);
+		    	WpAuthorInfo::setVar('settings', $defaultSettings);
+		    }
+		    if ( version_compare( $v1, $v2 ) > 0 ) { //do upgrade
+		    }
 		}
 
 		static public function init() {
@@ -47,22 +66,61 @@ if(!class_exists('WpAuthorInfo')){
 	        $GLOBALS[ __CLASS__ ] = new self;
 	    }
 
-	    static public function get_author_info($theme = 'default', $authorId = '') {
+	    static public function get_author_info($authorId = '', $theme = '', $color = '', $dir = '', $social_style = '') {
 	    	if (!$authorId) {
 	    		$authorId = get_the_author_meta('ID');
 	    	}
-	    	ob_start();
-	    	$theme_file = WpAuthorInfo::getVar('front_view','path').$theme.'.php';
-	    	if (file_exists($theme_file)) {
-	            include($theme_file);
+	    	$settings = WpAuthorInfo::getVar('settings');
+	    	if ($theme == '') {
+	    		$theme = $settings['theme'];
 	    	}
-            $ret = ob_get_contents();
-			ob_end_clean();
+	    	if ($color == '') {
+	    		$color = $settings['color'];
+	    	}
+	    	if ($dir == '') {
+	    		$dir = $settings['dir'] ? $settings['dir'] : 'ltr';
+	    	}
+	    	if ($social_style == '') {
+	    		$social_style = $settings['social_style'] ? $settings['social_style'] : 'default';
+	    	}
+	    	$theme_file = WpAuthorInfo::getVar('front_view', 'path').$theme.'.php';
+	    	if (file_exists($theme_file)) {
+	    		$userFields = WpAuthorInfo::get_user_fields($authorId);
+	    		$avatar = get_avatar($authorId);
+	    		$display_name = ucfirst(get_the_author_meta('display_name', $authorId));
+	    		$description = get_the_author_meta('description', $authorId);
+		    	ob_start();
+	            include($theme_file);
+	            $ret = ob_get_contents();
+				ob_end_clean();
+				return $ret;
+	    	}
+	    	return '';
+        }
+
+	    static public function get_user_fields($userId = '') {
+	    	if (!$userId) {
+	    		$userId = get_the_author_meta('ID');
+	    	}
+	    	if (!$userId) {
+	    		return array();
+	    	}
+	    	$settings = WpAuthorInfo::getVar('settings');
+			$availFields = WpAuthorInfo::getVar('fields');
+			$ret = array();
+			foreach ($availFields as $field) {
+		        if (!in_array($field['field'], $settings['visibile_fields'])){
+		            continue;
+		        }
+		        $fn = 'wpai_'.$field['field'];
+		        $ret[$field['field']] = esc_attr( get_the_author_meta( $fn, $userId ) );
+		    }
 			return $ret;
         }
 
 		private function define_constants() {
 			$arr = array();
+			$arr['version'] = '2.0.0';
 			$arr['unique'] = 'wp_author_info';
 			$arr['plugin'] = __FILE__;
 
@@ -82,6 +140,46 @@ if(!class_exists('WpAuthorInfo')){
 			$arr['url']['admin'] = get_option('siteurl').'/wp-admin/admin.php';
 			$arr['settings'] = get_option('wp-author-info-settings');
 			$arr['settings'] = $arr['settings'] && is_array($arr['settings']) ? $arr['settings'] : array();
+			$arr['fields'] = array(
+					array('name'  => 'Twitter',
+						'field' => 'twitter',
+						'help'  => 'Enter your Twitter acount profile URL.'),
+					array('name'  => 'Facebook',
+					   'field' => 'facebook',
+					   'help'  => 'Enter your Facebook profile URL.'),
+					array('name'  => 'Google+',
+					   'field' => 'google_plus',
+					   'help'  => 'Enter your Google+ profile URL.'),
+					array('name'  => 'LinkedIn',
+					   'field' => 'linked_in',
+					   'help'  => 'Enter your LinkedIn profile URL.'),
+					array('name'  => 'Instagram',
+					   'field' => 'instagram',
+					   'help'  => 'Enter your Instagram profile URL.'),
+					array('name'  => 'Flickr',
+					   'field' => 'flickr',
+					   'help'  => 'Enter your Flickr profile URL.'),
+					array('name'  => 'Pinterest',
+					   'field' => 'pinterest',
+					   'help'  => 'Enter your Pinterest profile URL.'),
+					array('name'  => 'Tumblr',
+					   'field' => 'tumblr',
+					   'help'  => 'Enter your Tumblr profile URL.'),
+					array('name'  => 'YouTube',
+					   'field' => 'youtube',
+					   'help'  => 'Enter your YouTube profile/channel URL.'),
+					array('name'  => 'Vimeo',
+					   'field' => 'vimeo',
+					   'help'  => 'Enter your Vimeo profile URL.'),
+					array('name'  => 'StumbleUpon',
+					   'field' => 'stumbleupon',
+					   'help'  => 'Enter your StumbleUpon URL.'),
+					array('name'  => 'Delicious',
+					   'field' => 'delicious',
+					   'help'  => 'Enter your Delicious URL.'),
+				);
+			$arr['themes'] = array('default', 'box', 'border-box', 'smart', 'material', 'metro');
+			$arr['colors'] = array('blue', 'orange', 'green', 'red', 'white', 'black');
 			WpAuthorInfo::$_var = $arr;
 		}
 

@@ -3,6 +3,22 @@
 .button-primary.orange{
 
 }
+.p-l{padding-left: 15px;}
+.p-l-xl{padding-left: 50px;}
+.icn-main{
+	display: inline-block;
+    width: 48px;
+    height: 64px;
+    background: url(../../images/icon-48x48.png) left center no-repeat transparent;
+    margin-right: 8px;
+    border: none;
+    vertical-align: middle;
+    margin-top: -6px;
+}
+.col .col3{
+	width: 33.33%;
+	float: left;
+}
 .g-success-msg {
 	background: url("../../images/success.png") no-repeat scroll 12px 9px #D7F7DF;
 	border: 1px solid #A3F7B8;

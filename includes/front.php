@@ -15,9 +15,9 @@ Class WpAuthorInfoFront {
             $settings = WpAuthorInfo::getVar('settings');
             if (isset($settings['post_types'][$post_type])) {
                 if ($settings['post_types'][$post_type] == 'above') {
-                    $content = WpAuthorInfo::get_author_info($settings['theme']).$content;
+                    $content = WpAuthorInfo::get_author_info().$content;
                 } else if ($settings['post_types'][$post_type] == 'below') {
-                    $content = $content.WpAuthorInfo::get_author_info($settings['theme']);
+                    $content = $content.WpAuthorInfo::get_author_info();
                 }
             }
         }

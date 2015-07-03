@@ -32,11 +32,14 @@ $post_types = get_post_types(array(
 ));
 $post_types = array_merge(array('page'=>'page', 'post'=>'post'),$post_types);
 $settings = WpAuthorInfo::getVar('settings');
+$availFields = WpAuthorInfo::getVar('fields');
+$availThemes = WpAuthorInfo::getVar('themes');
+$availColors = WpAuthorInfo::getVar('colors');
 ?>
 <div class="wrap">
 	<h2></h2>
 	<div class="ghuwad-panel">
-		<h2 class="gtitle"><?php _e( 'WP Author Info', $lang ); ?> <span class="version">v1.0.0</span></h2>
+		<h2 class="gtitle"><i class="icn-main"></i><?php _e( 'WP Author Info', $lang ); ?> <span class="version">v2.0.0</span></h2>
 		<div class="gnav">
 			<a href="javascript:void(0)" class="active" data-tab="settings"><?php _e( 'Settings', $lang ); ?></a>
 			<a href="javascript:void(0)" data-tab="help"><?php _e( 'Help', $lang ); ?></a>
@@ -46,6 +49,7 @@ $settings = WpAuthorInfo::getVar('settings');
 		<div class="gbody">
 			<div id="gtab-settings" class="gtab-content open">
 				<form method="post" id="frmOptions" action="options.php">
+				<input type="hidden" name="wp-author-info-settings[version]" value="<?php echo WpAuthorInfo::getVar('version'); ?>">
 				<?php settings_fields('wp-author-info-settings');
 					do_settings_sections('wp-author-info-settings'); ?>
 					<div class="subheadd">
@@ -58,7 +62,8 @@ $settings = WpAuthorInfo::getVar('settings');
 					<div class="nav-vertical">
 						<div class="gnav">
 							<a href="javascript:void(0)" class="active" data-tab="display"><?php _e('Visiblity', $lang ); ?></a>
-							<a href="javascript:void(0)" data-tab="theme"><?php _e('Theme', $lang ); ?></a>
+							<a href="javascript:void(0)" data-tab="theme"><?php _e('Theme & Style', $lang ); ?></a>
+							<a href="javascript:void(0)" data-tab="user-field"><?php _e('User Fields', $lang ); ?></a>
 						</div>
 						<div class="gtab-content-con">
 							<div id="gtab-display" class="gtab-content open">
@@ -87,15 +92,78 @@ $settings = WpAuthorInfo::getVar('settings');
 								</div>
 							</div>
 							<div id="gtab-theme" class="gtab-content">
-								<h3><?php _e('Theme Settings', $lang ); ?></h3>
-								<div class="gnote"><?php _e('Choose theme for Author Info section', $lang ); ?></div>
+								<h3><?php _e('Theme & Style Settings', $lang ); ?></h3>
+								<div class="gnote"><?php _e('Choose theme & color for Author Info section', $lang ); ?></div>
 								<div class="grow first">
 									<div class="glbl"><?php _e('Select any theme', $lang ); ?></div>
 									<div class="gcon">
 										<select name="wp-author-info-settings[theme]">
-											<option value="default" <?php echo isset($settings['theme']) && $settings['theme'] == 'default' ? 'selected="selected"':'';?>><?php _e('Default', $lang ); ?></option>
-											<option value="box" <?php echo isset($settings['theme']) && $settings['theme'] == 'box' ? 'selected="selected"':'';?>><?php _e('Box', $lang ); ?></option>
+										<?php
+										foreach ($availThemes as $theme) {
+										?>
+											<option value="<?php echo $theme;?>" <?php echo isset($settings['theme']) && $settings['theme'] == $theme ? 'selected="selected"':'';?>><?php _e( ucwords(str_replace('-', ' ', $theme) ), $lang ); ?></option>
+										<?php } ?>
 										</select>
+									</div><div class="gclear"></div>
+								</div>
+								<div class="grow first">
+									<div class="glbl"><?php _e('Select any color', $lang ); ?></div>
+									<div class="gcon">
+										<select name="wp-author-info-settings[color]">
+										<?php
+										foreach ($availColors as $color) {
+										?>
+											<option value="<?php echo $color;?>" <?php echo isset($settings['color']) && $settings['color'] == $color ? 'selected="selected"':'';?>><?php _e( ucwords(str_replace('-', ' ', $color) ), $lang ); ?></option>
+										<?php } ?>
+										</select>
+										<div class="gnote"><?php _e('Note: Color hasn\'t not effect if theme is default.', $lang ); ?></div>
+									</div><div class="gclear"></div>
+								</div>
+								<div class="grow first">
+									<div class="glbl"><?php _e('Select text direction', $lang ); ?></div>
+									<div class="gcon">
+										<select name="wp-author-info-settings[dir]">
+										<?php
+										$availDirections = array('ltr'=>'left-to-right', 'rtl'=>'right-to-left');
+										foreach ($availDirections as $v=>$dir) {
+										?>
+											<option value="<?php echo $v;?>" <?php echo isset($settings['dir']) && $settings['dir'] == $v ? 'selected="selected"':'';?>><?php _e( ucwords(str_replace('-', ' ', $dir) ), $lang ); ?></option>
+										<?php } ?>
+										</select>
+									</div><div class="gclear"></div>
+								</div>
+								<div class="grow first">
+									<div class="glbl"><?php _e('Select Social icon style', $lang ); ?></div>
+									<div class="gcon">
+										<select name="wp-author-info-settings[social_style]">
+										<?php
+										$availDirections = array('default'=>'default', 'rounded'=>'Rounded');
+										foreach ($availDirections as $v=>$dir) {
+										?>
+											<option value="<?php echo $v;?>" <?php echo isset($settings['social_style']) && $settings['social_style'] == $v ? 'selected="selected"':'';?>><?php _e( ucwords(str_replace('-', ' ', $dir) ), $lang ); ?></option>
+										<?php } ?>
+										</select>
+									</div><div class="gclear"></div>
+								</div>
+								<div class="grow last">
+									<div class="glbl">&nbsp;</div>
+									<div class="gcon">
+										<button type="submit" class="button-primary orange"><?php _e('Update', $lang ); ?></button>
+									</div>
+								</div>
+							</div>
+							<div id="gtab-user-field" class="gtab-content">
+								<h3><?php _e('Customize User Fields', $lang ); ?></h3>
+								<div class="gnote"><?php _e('Choose which field you want for User Profile', $lang ); ?></div>
+								<div class="grow first">
+									<div class="glbl"><?php _e('Choose Fields', $lang ); ?></div>
+									<div class="gcon col">
+										<?php
+										$settings['visibile_fields'] = isset($settings['visibile_fields']) ? $settings['visibile_fields'] : array();
+										foreach ($availFields as $field) {
+											$selected = in_array($field['field'], $settings['visibile_fields']) ? 'checked="checked"' : '';
+											echo '<div class="col3"><label><input type="checkbox" value="',$field['field'],'" name="wp-author-info-settings[visibile_fields][]" ',$selected,'/>', $field['name'],'</label></div>';
+										}?>
 									</div><div class="gclear"></div>
 								</div>
 								<div class="grow last">
@@ -116,15 +184,19 @@ $settings = WpAuthorInfo::getVar('settings');
 					<strong>Take look for all features.</strong>
 					<ul class="t">
 						<li><span>You can prefix or sufix author detail on any post type (including page &amp; post).</span></li>
-						<li><span>You can set theme for author info.</span></li>
+						<li><span>You can set theme, color &amp; style for author info, also social icon style.</span></li>
+						<li><span>You can select any social field to user profile.</span></li>
 						<li><span>You can also add author detail at widget or content using shortcode.</span></li>
 					</ul>
 				</div>
 				<div class="p">
 					<strong>Read about Shortcode:</strong>
-					<code>[wp-author-info theme="default" author_id="1"]</code> has two arguments.
+					<code>[wp-author-info theme="default" color="black" dir="ltr" social_style="default" author_id="1"]</code> has five arguments.
 					<ul class="t">
-						<li><span><strong>theme (optional)</strong> : set given theme for content otherwise take theme from settings</span></li>
+						<li><span><strong>theme (optional)</strong> : set given theme for content otherwise take theme from settings<br/>(Available value : default, border, box-border, smart, material, metro)</span></li>
+						<li><span><strong>color (optional)</strong> : set given color for theme otherwise take color from settings<br/>(Available value : blue, orange, green, red, white, black)</span></li>
+						<li><span><strong>dir (optional)</strong> : set text direction for content otherwise take dir from settings or default `ltr`<br/>(Available value: ltr, rtl)</span></li>
+						<li><span><strong>social_style (optional)</strong> : set social icon style otherwise take dir from settings<br/>(Available value: default, rounded)</span></li>
 						<li><span><strong>author_id (optional)</strong> : specified which author info is display wiht shortcode, if it blank or not pass then it display current user within wordpress loop.</span></li>
 					</ul>
 				</div>

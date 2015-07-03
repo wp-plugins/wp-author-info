@@ -7,6 +7,13 @@ Class WpAuthorInfoAdmin{
     public function __construct() {
         add_action( 'admin_init', array( &$this, 'admin_init') );
         add_action( 'admin_menu', array( &$this, 'admin_menu' ), 9 );
+
+        // show user fields
+        add_action( 'edit_user_profile', array( &$this, 'show_user_fields' ) );
+        add_action( 'show_user_profile', array( &$this, 'show_user_fields' ) );
+        // update user profile field
+        add_action( 'personal_options_update', array( &$this, 'save_user_fields' ) );
+        add_action( 'edit_user_profile_update', array( &$this, 'save_user_fields' ) );
     }
     function admin_init() {
         wp_register_style( 'wp-author-info-css-admin', WpAuthorInfo::getVar('css','url') . 'admin/admin-styles.css');
@@ -46,6 +53,25 @@ Class WpAuthorInfoAdmin{
 
     public function router() {
         include(WpAuthorInfo::getVar('admin_view','path').'default.php');
+    }
+
+    function show_user_fields( $user ) {
+        if ( user_can( $user, 'edit_posts') ) {
+            include WpAuthorInfo::getVar('base','path').'views/admin/user-fields.php';
+        }
+    }
+
+    function save_user_fields( $user_id ) {
+        if ( !current_user_can( 'edit_user', $user_id ) )
+            return false;
+
+        $availFields = WpAuthorInfo::getVar('fields');
+        foreach ($availFields as $field) {
+            $fn = 'wpai_'.$field['field'];
+            if (isset($_POST[$fn])){
+                update_user_meta( $user_id, $fn, strip_tags( $_POST[$fn] ) );
+            }
+        }
     }
 }
 
