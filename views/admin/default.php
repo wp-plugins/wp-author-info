@@ -71,7 +71,7 @@ if (!$ginit) {
 		<div class="gbody">
 			<div id="gtab-settings" class="gtab-content<?php echo (int)$activeTab==1?' open':'';?>">
 				<form method="post" id="frmOptions" action="#">
-				<input type="hidden" name="g_request" value="option"/>
+				<input type="hidden" name="g_request" value="g-wai-option"/>
 				<input type="hidden" name="wp-author-info-settings[version]" value="<?php echo WpAuthorInfo::getVar('version'); ?>">
 				<?php settings_fields('wp-author-info-settings');
 					do_settings_sections('wp-author-info-settings'); ?>
@@ -259,7 +259,7 @@ if (!$ginit) {
 					echo '<div class="g-error-msg">',$errMsg['contact'],'</div>';
 				}?>
 				<form method="post" id="frmContact">
-					<input type="hidden" name="g_request" value="contact-us"/>
+					<input type="hidden" name="g_request" value="g-wai-contact-us"/>
 					<div class="grow">
 						<div class="glbl g-a-r"><?php _e('Your Name', $lang ); ?> <?php _e('(required)', $lang ); ?></div>
 						<div class="gcon">
@@ -307,7 +307,7 @@ if (!$ginit) {
 				<?php _e('Email', $lang ); ?> : <a href="mailto:contact@ghuwad.com">contact@ghuwad.com</a>
 			</div>
 			<div class="subheadd">
-				Add your <a href="https://wordpress.org/support/view/plugin-reviews/wp-author-info" target="_blank"><span class="greq">&#9733;&#9733;&#9733;&#9733;&#9733;</span></a> on wordpress.org to spread the love. | 
+				Add your <a href="https://wordpress.org/support/view/plugin-reviews/wp-author-info" target="_blank"><span class="greq">&#9733;&#9733;&#9733;&#9733;&#9733;</span></a> on wordpress.org to spread the love. |
 				<?php _e('Develop with <span class="greq"><strong>&#9829;</strong></span> by', $lang ); ?> <a href="http://ghuwad.com" target="_blank">Ghuwad.com</a>
 			</div>
 		</div>
