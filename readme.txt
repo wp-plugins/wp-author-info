@@ -3,7 +3,7 @@ Contributors: Ghuwad, siddhapurahitesh
 Tags: Author Detail, Author Info, Author Detail into page, Author detail into custom page, Author detail into custom post type, Author Bio into page, Author Bio into custom post type, Author bio with social icons
 Requires at least: 3.0
 Tested up to: 4.2.2
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,18 +47,23 @@ Ask questions about at the plugin <a href="mailto:contact@ghuwad.com">contact@gh
 1. **Setting Page - Visibility Option** - You can set where to display author info on site.
 2. **Setting Page - Theme Option** - Set look & feel for author info detail. We have right now add only basic look, later will extend new theme.
 3.  **Setting Page - User Fields Option** - Choose which social field for user profile and display at author info section.
-4. **Example 1** - Show author info above post content
-5. **Example 2** - Show author info below post content
+4.  **Setting Page - Advance Option** - Advance option for plugin.
+5. **Example 1** - Show author info above post content
+6. **Example 2** - Show author info below post content
 
 == Changelog ==
 
-= 2.0.0. =
-Many new features available  
+= 2.0.1 =
+
+* Can hide WP Author Info box on any page/posts (via Advance setting)
+
+= 2.0.0 =
+Many new features available
 
 * Add new design `border-box`, `smart`, `material`, `metro`
 * Add Social Icon (user field) to user profile
 * Customize color with theme
 * Customize social icon display type
 
-= 1.0.0. =
+= 1.0.0 =
 * Initial release with Author Detail.

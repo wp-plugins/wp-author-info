@@ -28,7 +28,7 @@
 	text-align: left;
 }
 .g-error-msg {
-	background: url("../../images/error1.png") no-repeat scroll 12px 9px #FFEBE8;
+	background: url("../../images/error.png") no-repeat scroll 12px 9px #FFEBE8;
 	border: 1px solid #CC0000;
 	color: #C24848;
 	margin: 15px 0;
@@ -37,6 +37,7 @@
 .gclear{clear:both;}
 .g-a-r{text-align: right;}
 .gnote{color:#BDBDBD;}
+.greq{color:#C24848;}
 /*base*/
 .ghuwad-panel{
 	margin: 0px auto;

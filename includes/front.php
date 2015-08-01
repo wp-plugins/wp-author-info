@@ -12,8 +12,10 @@ Class WpAuthorInfoFront {
     public function add_to_content($content) {
         if (is_singular()) {
             $post_type = get_post_type();
+            $post_id = get_the_ID();
             $settings = WpAuthorInfo::getVar('settings');
-            if (isset($settings['post_types'][$post_type])) {
+            $notInPost = empty($settings['hide_on_post']) ? array() : explode(',', $settings['hide_on_post']);
+            if (isset($settings['post_types'][$post_type]) && !in_array($post_id, $notInPost) ) {
                 if ($settings['post_types'][$post_type] == 'above') {
                     $content = WpAuthorInfo::get_author_info().$content;
                 } else if ($settings['post_types'][$post_type] == 'below') {

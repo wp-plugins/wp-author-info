@@ -1,28 +1,48 @@
 <?php
 global $ginit;
 $errMsg = array();
+$activeTab = empty($_GET['at']) ? 1.1 : $_GET['at'];
 if (isset($_POST['contact'])) {
 	if (!empty($_POST['your-name']) && !empty($_POST['your-email'])) {
 		$name = sanitize_text_field($_POST['your-name']);
 		$email = sanitize_email($_POST['your-email']);
 		$subject = sanitize_text_field($_POST['subject']);
-		$message = sanitize_text_field($_POST['message']);
+		$text_message = sanitize_text_field($_POST['message']);
 		$message = array();
 		$message[] = 'Date : '.date('Y-m-d H:i:s');
 		$message[] = 'Name : '.$name;
 		$message[] = 'Email : '.$email;
 		$message[] = 'Subject : '.$subject;
 		$message[] = 'Message : ';
-		$message[] = $message;
-		$message = implode('\n', $message);
+		$message[] = $text_message;
+		$message = implode("\r\n", $message);
 		wp_mail( 'contact@ghuwad.com', 'WpAuthorInfo - Contact', $message );
 		if ($ginit) {
-			wp_redirect(admin_url( 'admin.php?page=wp_author_info&email_sent=1'));
+			wp_redirect(admin_url( 'admin.php?page=wp_author_info&email_sent=1&at=3'));
 			exit;
 		}
 	} else {
 		$errMsg['contact'] = 'Please enter require field';
+		$activeTab = 3;
 	}
+} else if (isset($_POST['go_tab'])) {
+	$option_name = 'wp-author-info-settings' ;
+	if (isset($_POST[$option_name])) {
+		$new_value = $_POST[$option_name];
+		$at = is_array($_POST['go_tab'])?array_keys($_POST['go_tab'])[0]:$_POST['go_tab'];
+		if (get_option( $option_name ) !== false) {
+		    update_option( $option_name, $new_value );
+		} else {
+		    $deprecated = null;
+		    $autoload = 'no';
+		    add_option( $option_name, $new_value, $deprecated, $autoload );
+		}
+		if ($ginit) {
+			wp_redirect(admin_url('admin.php?page=wp_author_info&settings-updated=true&at='.$at));
+			exit;
+		}
+	}
+
 }
 $WpAuthorInfo = $GLOBALS[ 'WpAuthorInfo' ];
 $lang = $WpAuthorInfo->getVar('lang');
@@ -35,20 +55,23 @@ $settings = WpAuthorInfo::getVar('settings');
 $availFields = WpAuthorInfo::getVar('fields');
 $availThemes = WpAuthorInfo::getVar('themes');
 $availColors = WpAuthorInfo::getVar('colors');
+
+if (!$ginit) {
 ?>
 <div class="wrap">
 	<h2></h2>
 	<div class="ghuwad-panel">
-		<h2 class="gtitle"><i class="icn-main"></i><?php _e( 'WP Author Info', $lang ); ?> <span class="version">v2.0.0</span></h2>
+		<h2 class="gtitle"><i class="icn-main"></i><?php _e( 'WP Author Info', $lang ); ?> <span class="version">v<?php echo WpAuthorInfo::getVar('version');?></span></h2>
 		<div class="gnav">
-			<a href="javascript:void(0)" class="active" data-tab="settings"><?php _e( 'Settings', $lang ); ?></a>
-			<a href="javascript:void(0)" data-tab="help"><?php _e( 'Help', $lang ); ?></a>
-			<a href="javascript:void(0)" data-tab="contact"><?php _e( 'Report Bug or Request New Feature', $lang ); ?></a>
-			<a href="javascript:void(0)" data-tab="about-us"><?php _e( 'About Us', $lang ); ?></a>
+			<a href="javascript:void(0)" class="ghas-sub<?php echo (int)$activeTab==1?' active':'';?>" data-tab="settings"><?php _e( 'Settings', $lang ); ?></a>
+			<a href="javascript:void(0)" class="<?php echo (int)$activeTab==2?' active':'';?>" data-tab="help"><?php _e( 'Help', $lang ); ?></a>
+			<a href="javascript:void(0)" class="<?php echo (int)$activeTab==3?' active':'';?>" data-tab="contact"><?php _e( 'Report Bug or Request New Feature', $lang ); ?></a>
+			<a href="javascript:void(0)" class="<?php echo (int)$activeTab==4?' active':'';?>" data-tab="about-us"><?php _e( 'About Us', $lang ); ?></a>
 		</div>
 		<div class="gbody">
-			<div id="gtab-settings" class="gtab-content open">
-				<form method="post" id="frmOptions" action="options.php">
+			<div id="gtab-settings" class="gtab-content<?php echo (int)$activeTab==1?' open':'';?>">
+				<form method="post" id="frmOptions" action="#">
+				<input type="hidden" name="g_request" value="option"/>
 				<input type="hidden" name="wp-author-info-settings[version]" value="<?php echo WpAuthorInfo::getVar('version'); ?>">
 				<?php settings_fields('wp-author-info-settings');
 					do_settings_sections('wp-author-info-settings'); ?>
@@ -61,12 +84,13 @@ $availColors = WpAuthorInfo::getVar('colors');
 					</div>
 					<div class="nav-vertical">
 						<div class="gnav">
-							<a href="javascript:void(0)" class="active" data-tab="display"><?php _e('Visiblity', $lang ); ?></a>
-							<a href="javascript:void(0)" data-tab="theme"><?php _e('Theme & Style', $lang ); ?></a>
-							<a href="javascript:void(0)" data-tab="user-field"><?php _e('User Fields', $lang ); ?></a>
+							<a href="javascript:void(0)" class="<?php echo $activeTab==1.1?'active':'';?>" data-tab="display"><?php _e('Visiblity', $lang ); ?></a>
+							<a href="javascript:void(0)" class="<?php echo $activeTab==1.2?'active':'';?>" data-tab="theme"><?php _e('Theme & Style', $lang ); ?></a>
+							<a href="javascript:void(0)" class="<?php echo $activeTab==1.3?'active':'';?>" data-tab="user-field"><?php _e('User Fields', $lang ); ?></a>
+							<a href="javascript:void(0)" class="<?php echo $activeTab==1.4?'active':'';?>" data-tab="advance"><?php _e('Advance', $lang ); ?></a>
 						</div>
 						<div class="gtab-content-con">
-							<div id="gtab-display" class="gtab-content open">
+							<div id="gtab-display" class="gtab-content<?php echo $activeTab==1.1?' open':'';?>">
 								<h3><?php _e('Visiblity', $lang ); ?></h3>
 								<div class="gnote"><?php _e('Set where you want to show WP Author Info', $lang ); ?></div>
 								<?php
@@ -87,11 +111,11 @@ $availColors = WpAuthorInfo::getVar('colors');
 								<div class="grow last">
 									<div class="glbl">&nbsp;</div>
 									<div class="gcon">
-										<button type="submit" class="button-primary orange"><?php _e('Update', $lang ); ?></button>
+										<button name="go_tab[1.1]" type="submit" class="button-primary orange"><?php _e('Update', $lang ); ?></button>
 									</div>
 								</div>
 							</div>
-							<div id="gtab-theme" class="gtab-content">
+							<div id="gtab-theme" class="gtab-content<?php echo $activeTab==1.2?' open':'';?>">
 								<h3><?php _e('Theme & Style Settings', $lang ); ?></h3>
 								<div class="gnote"><?php _e('Choose theme & color for Author Info section', $lang ); ?></div>
 								<div class="grow first">
@@ -148,11 +172,11 @@ $availColors = WpAuthorInfo::getVar('colors');
 								<div class="grow last">
 									<div class="glbl">&nbsp;</div>
 									<div class="gcon">
-										<button type="submit" class="button-primary orange"><?php _e('Update', $lang ); ?></button>
+										<button type="submit" name="go_tab[1.2]" class="button-primary orange"><?php _e('Update', $lang ); ?></button>
 									</div>
 								</div>
 							</div>
-							<div id="gtab-user-field" class="gtab-content">
+							<div id="gtab-user-field" class="gtab-content<?php echo $activeTab==1.3?' open':'';?>">
 								<h3><?php _e('Customize User Fields', $lang ); ?></h3>
 								<div class="gnote"><?php _e('Choose which field you want for User Profile', $lang ); ?></div>
 								<div class="grow first">
@@ -169,7 +193,23 @@ $availColors = WpAuthorInfo::getVar('colors');
 								<div class="grow last">
 									<div class="glbl">&nbsp;</div>
 									<div class="gcon">
-										<button type="submit" class="button-primary orange"><?php _e('Update', $lang ); ?></button>
+										<button name="go_tab[1.3]"  type="submit" class="button-primary orange"><?php _e('Update', $lang ); ?></button>
+									</div>
+								</div>
+							</div>
+							<div id="gtab-advance" class="gtab-content<?php echo $activeTab==1.4?' open':'';?>">
+								<h3><?php _e('Advance Settings', $lang ); ?></h3>
+								<div class="grow first">
+									<div class="glbl"><?php _e('Hide WP Author Info box on page/posts', $lang ); ?></div>
+									<div class="gcon">
+										<input name="wp-author-info-settings[hide_on_post]" value="<?php if(!empty($settings['hide_on_post'])) { echo $settings['hide_on_post']; }?>" class="regular-text"/>
+										<div class="gnote"><?php _e('Note: Add comma seperate post/page id, where needs to hide Wp Author Info', $lang ); ?></div>
+									</div><div class="gclear"></div>
+								</div>
+								<div class="grow last">
+									<div class="glbl">&nbsp;</div>
+									<div class="gcon">
+										<button name="go_tab[1.4]"  type="submit" class="button-primary orange"><?php _e('Update', $lang ); ?></button>
 									</div>
 								</div>
 							</div>
@@ -179,7 +219,7 @@ $availColors = WpAuthorInfo::getVar('colors');
 					<div class="gclear"></div>
 				</form>
 			</div>
-			<div id="gtab-help" class="gtab-content info">
+			<div id="gtab-help" class="gtab-content info<?php echo (int)$activeTab==2?' open':'';?>">
 				<div class="p">
 					<strong>Take look for all features.</strong>
 					<ul class="t">
@@ -208,7 +248,7 @@ $availColors = WpAuthorInfo::getVar('colors');
 					</ul>
 				</div>
 			</div>
-			<div id="gtab-contact" class="gtab-content gcontact-us info">
+			<div id="gtab-contact" class="gtab-content gcontact-us info<?php echo (int)$activeTab==3?' open':'';?>">
 				<div class="p">
 					<?php _e('You can contact us as below');?>
 				</div>
@@ -262,13 +302,15 @@ $availColors = WpAuthorInfo::getVar('colors');
 					</div>
 				</form>
 			</div>
-			<div id="gtab-about-us" class="gtab-content gabout-us info">
+			<div id="gtab-about-us" class="gtab-content gabout-us info<?php echo $activeTab==4?' open':'';?>">
 				<a href="http://ghuwad.com"><img src="<?php echo WpAuthorInfo::getVar('images','url');?>/ghuwad-logo.png" alt="Ghuwad.com"/></a><br/>
 				<?php _e('Email', $lang ); ?> : <a href="mailto:contact@ghuwad.com">contact@ghuwad.com</a>
 			</div>
 			<div class="subheadd">
-				<?php _e('Develop by', $lang ); ?> <a href="http://ghuwad.com" target="_blank">Ghuwad.com</a>
+				Add your <a href="https://wordpress.org/support/view/plugin-reviews/wp-author-info" target="_blank"><span class="greq">&#9733;&#9733;&#9733;&#9733;&#9733;</span></a> on wordpress.org to spread the love. | 
+				<?php _e('Develop with <span class="greq"><strong>&#9829;</strong></span> by', $lang ); ?> <a href="http://ghuwad.com" target="_blank">Ghuwad.com</a>
 			</div>
 		</div>
 	</div>
 </div>
+<?php } ?>

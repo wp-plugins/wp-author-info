@@ -24,6 +24,7 @@ Class WpAuthorInfoAdmin{
 
         if(isset($_REQUEST['g_request'])){
             switch($_REQUEST['g_request']){
+                case 'option':
                 case 'contact-us':
                     include WpAuthorInfo::getVar('admin_view','path').'default.php';
                     break;

@@ -4,7 +4,7 @@
  * Plugin Name: WP Author Info
  * Plugin URI: http://ghuwad.com/
  * Description: Show author detail or author bio on any post type at below or above the content (including page & post).
- * Version: 2.0.0
+ * Version: 2.0.1
  * Author: Ghuwad.com
  * Author URI: http://www.ghuwad.com/wordpress-plugins/wp-author-info
  * License: GPL2 or later
@@ -120,7 +120,7 @@ if(!class_exists('WpAuthorInfo')){
 
 		private function define_constants() {
 			$arr = array();
-			$arr['version'] = '2.0.0';
+			$arr['version'] = '2.0.1';
 			$arr['unique'] = 'wp_author_info';
 			$arr['plugin'] = __FILE__;
 
@@ -184,7 +184,7 @@ if(!class_exists('WpAuthorInfo')){
 		}
 
 		private function includes() {
-			require_once WpAuthorInfo::getVar('base','path').'lib/Helper.php';
+			require_once WpAuthorInfo::getVar('base','path').'includes/common-functions.php';
 
 			require_once WpAuthorInfo::getVar('base','path').'/includes/shortcodes.php';
 			if ( is_admin() ) {
