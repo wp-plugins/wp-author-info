@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: Ghuwad, siddhapurahitesh
+Contributors: Ghuwad, siddhapura.hitesh
 Tags: Author Detail, Author Info, Author Detail into page, Author detail into custom page, Author detail into custom post type, Author Bio into page, Author Bio into custom post type, Author bio with social icons
 Requires at least: 3.0
 Tested up to: 4.2.2
